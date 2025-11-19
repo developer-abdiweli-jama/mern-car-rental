@@ -1,17 +1,15 @@
-/* stylelint-disable at-rule-no-unknown */
-
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
     font-family: "Outfit", sans-serif;
 }
+
 :root {
-    --color-primary: #2563EB;
-    --color-primary-dull: #1F58D8;
-    --color-light: #F1F5F9;
-    --color-border-color: #c4c7d2;
+    --color-primary: 37 99 235;    /* #2563EB in RGB */
+    --color-primary-dull: 31 88 216; /* #1F58D8 in RGB */
+    --color-light: 241 245 249;    /* #F1F5F9 in RGB */
+    --color-border-color: 196 199 210; /* #c4c7d2 in RGB */
 }

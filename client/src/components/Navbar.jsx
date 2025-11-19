@@ -8,7 +8,7 @@ const Navbar = ({ setShowLogin }) => {
     const navigate = useNavigate();
 
     return (
-        <div className={`flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600 border-b border-borderColor relative transition-all ${location.pathname === '/' ? 'bg-light' : 'bg-white'}`}>
+        <div className={`flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600 border-b border-borderColor relative transition-all bg-light ${location.pathname === '/' ? 'bg-light' : 'bg-white'}`}>
 
             <Link to='/'>
                 <img src={assets.logo} alt="Logo" className="h-8" />
@@ -31,7 +31,7 @@ const Navbar = ({ setShowLogin }) => {
                     <button onClick={() => navigate('/owner')} className="cursor-pointer">
                         Dashboard
                     </button>
-                    <button onClick={() => setShowLogin(true)} className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-lg" style={{ backgroundColor: '#1F58D8' }}>
+                    <button onClick={() => setShowLogin(true)} className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-lg">
                         Login
                     </button>
                 </div>

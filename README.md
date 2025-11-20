@@ -166,9 +166,9 @@ Backend API → http://localhost:5000
 
 | Status     | Feature                        | ETA       |
 |------------|--------------------------------|-----------|
-| ✅         | Core booking system            | Done      |
-| ✅         | Admin CRUD panel               | Done      |
-| 🔄         | Stripe payments                | Dec 2025  |
+| ✅         | Core booking system            | Live      |
+| ✅         | Admin CRUD panel               | Dec 2025  |
+| 🔄         | Stripe payments                | Jan 2026  |
 | 🔄         | Email notifications            | Jan 2026  |
 | ⏳         | Mobile-responsive PWA          | Feb 2026  |
 | ⏳         | Multi-language (i18n)          | Q1 2026   |
@@ -185,7 +185,7 @@ Contributions are welcome! Feel free to:
 ## 🎥 Tutorial Reference
 
 Built while following & improving upon:  
-[Build and Deploy a Full Stack Car Rental Application - React JS & ImageKit](https://www.youtube.com/watch?v=your-tutorial-link)  
+[Build and Deploy a Full Stack Car Rental Application - React JS & ImageKit]([https://youtu.be/tBObk72EYYw](https://youtu.be/tBObk72EYYw?si=9u__xQukrUqQV4PK))  
 (Extended with admin panel, auth, better state management, and production-grade practices)
 
 ## 📝 License

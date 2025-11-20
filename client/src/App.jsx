@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import CarDetails from './pages/CarDetails';
 import Cars from './pages/Cars';
 import MyBookings from './pages/MyBookings';
+import Footer from './components/Footer';
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false); // ← fixed: was missing useState call
@@ -21,6 +22,7 @@ const App = () => {
         <Route path='/cars/:id' element={<Cars />} />
         <Route path='/my-bookings/:id' element={<MyBookings />} />
       </Routes>
+      {!isOwnerPath && <Footer />}
     </>
   );
 };

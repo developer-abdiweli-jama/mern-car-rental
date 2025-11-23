@@ -6,6 +6,10 @@ const CarDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const car = dummyCarData.find(car => car._id === id);
+  const currency = import.meta.env.VITE_CURRENCY
+  const handleSubmit = async(e)=>{
+    e.preventDefault();
+  }
 
   if (!car) {
     return <Loader />; // Using Loader as requested; note: if car is not found, this will show indefinitely unless Loader handles errors
@@ -20,7 +24,7 @@ const CarDetails = () => {
       <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12'>
         {/* Left: Car Image and Details */}
         <div className='lg:col-span-2'>
-          <img src={car.image} alt={car.name} className='w-full h-auto md:max-h-100 object-cover rounded-xl mb-6 shadow-md' />
+          <img src={car.image} alt={car.name} className='w-full h-96 md:max-h-100 object-cover rounded-xl mb-6 shadow-md' />
           <div className='space-y-6'>
             <div className=''>
               <h1 className='text-3xl font-bold'>{car.brand} {car.model}</h1>
@@ -60,8 +64,25 @@ const CarDetails = () => {
           </div>
         </div>
         {/* Right: Booking Form */}
-        <form action="">
-          {/* Add your form fields here */}
+        <form onSubmit={handleSubmit} className='shadow-lg h-max sticky top-18 rounded-xl p-6 space-y-6 text-gray-500' action="">
+          <p className='flex items-center justify-between text-2xl text-gray-800 font-semibold'>{currency} {car.pricePerDay} <span className='text-base text-gray-400 font-normal'>per day</span></p>
+
+          <hr className='border-borderColor my-6' />
+
+          <div className='flex flex-col gap-2'>
+            <label htmlFor="pickup-date">Pickup Date</label>
+            <input type="date" className='border border-borderColor px-3 py-2 rounded-lg' required id='pickup-date' min={new Date().toISOString().split('T')[0]} />
+          </div>
+
+          <div className='flex flex-col gap-2'>
+            <label htmlFor="return-date">Return Date</label>
+            <input type="date" className='border border-borderColor px-3 py-2 rounded-lg' required id='return-date'/>
+          </div>
+
+          <button type='submit' className='w-full bg-primary text-white py-3 rounded-xl font-medium hover:bg-primary-dull transition-all cursor-pointer'>Book Now</button>
+
+          <p className='text-center text-sm'>No credit card required to reserve</p>
+          
         </form>
       </div>
     </div>

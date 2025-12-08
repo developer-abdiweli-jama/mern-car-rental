@@ -19,7 +19,7 @@ const Sidebar = () => {
                 <img className='h-9 md:h-14 w-9 md:w-14 rounded-full mx-auto' src={image ? URL.createObjectURL(image): user ?.image || "https://unsplash.com/photos/grayscale-photo-of-man-wearing-blazer-Kt8eGw8_S8Y" } alt="" />
                 <input type="file" id='image' accept='image/*' hidden onChange={(e)=> setImage(e.target.files[0])} onBlur={updateImage} />
 
-                <div className='absolute hidden top-0 left-0 bottom-0 bg-black/10 rounded-full group-hover:flex items-center justify-center cursor-pointer '>
+                <div className='absolute hidden top-0 right-0 left-0 bottom-0 bg-black/10 rounded-full group-hover:flex items-center justify-center cursor-pointer '>
                     <img src={assets.edit_icon} alt="" />
                 </div>
             </label>

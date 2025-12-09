@@ -5,6 +5,9 @@ import { assets } from '../../assets/assets'
 import Title from '../../components/owner/Title'
 
 const Dashboard = () => {
+
+  const currency = import.meta.env.VITE_CURRENCY
+
   const [data, setData] = useState({
     totalCars: 0,
     totalBookings: 0,
@@ -27,8 +30,8 @@ const Dashboard = () => {
     <div className='px-4 pt-10 md:px-10 flex-1'>
       <Title title="Admin Dashboard" subTitle='Monitor overall platform perfomance including totalcars, bookings, revenue, and recent activities ' />
       <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8 max-w-3xl'>
-        {dashboardCards.map((card) => (
-          <div key={card.title} className='flex items-center gap-2 justify-between p-4 bg-white rounded-md border border-borderColor'>
+        {dashboardCards.map((card, index) => (
+          <div key={index} className='flex items-center gap-2 justify-between p-4 bg-white rounded-md border border-borderColor'>
             <div className=''>
               <h1 className='text-xs text-gray-500 '>{card.title}</h1>
               <p className='text-lg font-semibold'>{card.value}</p>
@@ -58,13 +61,23 @@ const Dashboard = () => {
                   <p className='font-medium'>{booking.car.brand} {booking.car.model}</p>
                   <p className='text-sm text-gray-500'>{booking.createdAt.split('T')[0]}</p>
                 </div>
+
+                <div className='flex items-center gap-2 font-medium'>
+                  <p className='text-sm text-gray-500'>{currency} {booking.price}</p>
+                  <p className='px-3 py-0.5 border border-borderColor rounded-full text-sm'>{booking.status}</p>
+                </div>
+
               </div>
             </div>
           ))}
         </div>
 
         {/* Monthly revenue */}
-        <div className=''></div>
+        <div className='p-4 md:p-6 mb-6 border border-borderColor rounded-md md:max-w-xs w-full'>
+          <h1 className='text-lg font-medium'>Monthly Revenue</h1>
+          <p className='text-gray-500'>Revenue for current month</p>
+          <p className='text-3xl mt-6 font-semibold text-primary'>{currency}{data.monthlyRevenue}</p>
+        </div>
 
       </div>
 

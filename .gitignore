@@ -40,3 +40,5 @@ Thumbs.db
 
 # Local uploads (not committed)
 backend/public/uploads/
+.vercel
+.env*

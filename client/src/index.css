@@ -1,15 +1,95 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* {
-    font-family: "Outfit", sans-serif;
+:root {
+    --color-primary: 180 83 9;       /* #b45309 amber-700 */
+    --color-primary-hover: 146 64 14; /* #92400e amber-800 */
+    --color-primary-light: 253 224 71; /* #fde047 amber-300 */
+    --color-surface: 255 255 255;
+    --color-background: 248 250 252; /* #f8fafc slate-50 */
+    --color-border: 226 232 240;    /* #e2e8f0 slate-200 */
+    --color-text: 15 23 42;         /* #0f172a slate-900 */
+    --color-text-muted: 94 116 131; /* #64748b slate-500 */
+    --color-success: 21 128 61;     /* #15803d green-700 */
+    --color-warning: 180 83 9;      /* #b45309 amber-700 */
+    --color-error: 185 28 28;       /* #b91c1c red-700 */
+    --color-muted: 241 245 249;     /* #f1f5f9 slate-100 */
+    --shadow-soft: 15 23 42;
+    --shadow-md: 15 23 42;
+    --shadow-lg: 15 23 42;
 }
 
-:root {
-    --color-primary: 37 99 235;    /* #2563EB in RGB */
-    --color-primary-dull: 31 88 216; /* #1F58D8 in RGB */
-    --color-light: 241 245 249;    /* #F1F5F9 in RGB */
-    --color-border-color: 196 199 210; /* #c4c7d2 in RGB */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    margin: 0;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img, svg, video, canvas, audio, iframe, embed, object {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: inherit;
+}
+
+button:disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+:focus-visible {
+    outline: 2px solid rgb(var(--color-primary));
+    outline-offset: 2px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }

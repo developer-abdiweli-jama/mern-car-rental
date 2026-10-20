@@ -53,6 +53,11 @@ export const getCarById = async (req, res, next) => {
   return res.json({ success: true, data: { car } });
 };
 
+export const getOwnerCars = async (req, res) => {
+  const cars = await Car.find({ owner: req.user._id }).sort({ createdAt: -1 }).lean();
+  return res.json({ success: true, data: { cars } });
+};
+
 export const createCar = async (req, res) => {
   const carData = { ...req.body, owner: req.user._id };
   if (req.file) carData.image = await saveCarImage(req.file);

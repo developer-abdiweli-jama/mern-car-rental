@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   getCars,
   getCarById,
+  getOwnerCars,
   createCar,
   updateCar,
   deleteCar,
@@ -14,6 +15,7 @@ import asyncHandler from '../middleware/asyncHandler.js';
 const router = Router();
 
 router.get('/', asyncHandler(getCars));
+router.get('/mine', asyncHandler(authenticate), asyncHandler(getOwnerCars));
 router.get('/:id', validate({
   id: { source: 'params', required: true, rules: [rule(validators.objectId, 'Invalid vehicle id')] },
 }), asyncHandler(getCarById));

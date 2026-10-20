@@ -20,18 +20,21 @@ mern-car-rental/
 │   ├── .env.example        # backend environment variables (placeholders)
 │   ├── package.json
 │   └── eslint.config.js
-├── client/                 # React 19 + Vite + Tailwind CSS frontend
+├── client/                 # React 19 + Vite + TypeScript + Tailwind CSS frontend
 │   ├── src/
-│   │   ├── api/axios.js    # Axios instance (withCredentials, baseURL)
-│   │   ├── context/        # AuthProvider, useAuth (JWT session via httpOnly cookie)
-│   │   ├── components/     # shared UI (Navbar, CarCard, Loader, owner UI)
-│   │   ├── pages/          # Home, Cars, CarDetails, MyBookings, Login, Register, owner/*
-│   │   ├── utils/imageUrl.js
-│   │   ├── test/           # vitest setup
-│   │   ├── App.jsx
+│   │   ├── api/axios.ts      # Axios instance (withCredentials, baseURL)
+│   │   ├── context/          # AuthProvider, useAuth (JWT session via httpOnly cookie)
+│   │   ├── components/       # shared UI (Navbar, CarCard, Loader, owner UI)
+│   │   │   └── ui/           # accessible design-system primitives (Button, Input, Card, Badge, Alert, …)
+│   │   ├── pages/            # Home, Cars, CarDetails, MyBookings, Login, Register, owner/*
+│   │   ├── types/            # shared TypeScript types (User, Car, Booking, ApiResponse)
+│   │   ├── utils/imageUrl.ts
+│   │   ├── test/             # vitest setup
+│   │   ├── App.tsx
 │   │   └── index.css
-│   ├── .env                # frontend environment variables (placeholders)
-│   ├── vitest.config.js
+│   ├── .env                  # frontend environment variables
+│   ├── vitest.config.ts
+│   ├── tsconfig.json         # strict TypeScript
 │   ├── package.json
 │   └── ...
 ├── README.md
@@ -77,12 +80,29 @@ mern-car-rental/
 
 | Layer | Technologies |
 |-------|--------------|
-| Frontend | React 19, Vite, Tailwind CSS, React Router, Axios |
+| Frontend | React 19, TypeScript (strict), Vite, Tailwind CSS, React Router, Axios |
 | Backend | Node.js, Express, MongoDB, Mongoose |
 | Auth | JWT (httpOnly cookie), bcrypt |
 | Car images | Public image URLs; optional Multer uploads with Cloudinary in production |
 | Testing | Backend: Jest + Supertest; Frontend: Vitest + React Testing Library |
 | Lint | ESLint (flat config) |
+
+## 🔤 Frontend migration: JavaScript → TypeScript
+
+The frontend was migrated from JavaScript to TypeScript while preserving all existing behavior and user data. The migration was done incrementally, keeping the app buildable at every step:
+
+- All React components, pages, hooks, API code, and utilities are now `.ts` / `.tsx`.
+- Explicit types were added for API responses, users, roles, vehicles, bookings, filters, and form data (`client/src/types/index.ts`).
+- `any` is avoided; external API data is validated at the boundaries (runtime checks + type narrowing).
+- Strict TypeScript checking is enabled (`tsconfig.json` `strict: true`) and enforced via `npm run typecheck`.
+- ESLint was updated to work with the TypeScript parser (`typescript-eslint`) and flags `any` and unused variables.
+- No backend files were migrated to TypeScript; the Express backend remains JavaScript as the requested scope was frontend-only.
+
+Migration notes:
+- `client/src/main.tsx` previously imported the deleted `./App.jsx`; it now imports `./App`.
+- A new owner-scoped endpoint `GET /api/cars/mine` was added so the owner dashboard lists only that owner's vehicles (previously it listed all cars).
+- A new `EditCar` page (`/owner/edit-car/:id`) lets owners update their listings.
+- Dummy test fixtures previously living in `client/src/assets/assets.ts` were removed from production code.
 
 ## ⚙️ Installation & Setup
 
@@ -188,16 +208,17 @@ cd client
 npm test
 ```
 
-### Lint
+### Lint & TypeScript
 ```bash
 cd backend  && npm run lint
 cd client   && npm run lint
+cd client   && npm run typecheck   # strict `tsc --noEmit`
 ```
 
 ### Production builds
 ```bash
-cd backend && npm start   # builds nothing; runs src/server.js
-cd client  && npm run build   # outputs to client/dist
+cd backend && npm start   # runs src/server.js
+cd client  && npm run build   # typechecks then outputs to client/dist
 ```
 
 ## 📚 API Endpoints
@@ -212,6 +233,7 @@ Base: `http://localhost:5000/api` (all mutating endpoints require a session cook
 | POST | `/auth/logout` | cookie | Logout |
 | GET | `/auth/me` | cookie | Current user |
 | GET | `/cars` | none | List cars (page, limit, category, location, minPrice, maxPrice, search, sort) |
+| GET | `/cars/mine` | owner/admin | List the authenticated owner's vehicles |
 | GET | `/cars/:id` | none | Vehicle detail |
 | POST | `/cars` | owner/admin | Create vehicle (multipart image) |
 | PUT | `/cars/:id` | owner/admin | Update vehicle |

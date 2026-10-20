@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "test": "vitest run",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
     "axios": "^1.20.0",
@@ -21,6 +22,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.8",
+    "@types/node": "^26.6.5",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
@@ -32,6 +34,8 @@
     "jsdom": "^24.1.3",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.18",
+    "typescript": "^5.8.0",
+    "typescript-eslint": "^8.72.0",
     "vite": "^7.2.2",
     "vitest": "^5.0.5"
   }

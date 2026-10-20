@@ -34,10 +34,12 @@ const Newslatter = () => {
           label='Email address'
           placeholder='Enter your email'
           value={email}
+          type='email'
+          required
           onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
           className='w-full sm:w-80'
         />
-        <Button type='submit'>Subscribe</Button>
+        <Button type='submit' className='w-full sm:w-auto'>Subscribe</Button>
       </form>
     </section>
   );

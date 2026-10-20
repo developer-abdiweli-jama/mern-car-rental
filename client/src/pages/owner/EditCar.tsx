@@ -6,7 +6,7 @@ import { assets } from '../../assets/assets'
 import api from '../../api/axios'
 import { Card, CardContent } from '../../components/ui/card'
 import { Input } from '../../components/ui/input'
-import { Select } from '../../components/ui/input'
+import { Select, Textarea } from '../../components/ui/input'
 import { Button } from '../../components/ui/button'
 import { Alert } from '../../components/ui/alert'
 
@@ -135,23 +135,25 @@ const EditCar = () => {
 
         {error && <Alert variant='error' title='Update failed'>{error}</Alert>}
 
-        <Card padding='lg'>
-          <CardContent className='space-y-6'>
-            <form onSubmit={onSubmitHandler} className='space-y-6'>
+        <Card padding='none'>
+          <CardContent className='p-5 sm:p-8'>
+            <form onSubmit={onSubmitHandler} className='space-y-8'>
               <div>
-                <label className='block text-body-sm font-medium text-text mb-2'>Car image</label>
-                <div className='flex items-center gap-4'>
+                <p className='mb-2 text-sm font-semibold text-text'>Vehicle photo</p>
+                <div className='flex items-center gap-4 rounded-xl border border-dashed border-border bg-background p-4'>
                   <img
+                    role='presentation'
                     src={imagePreview || imageUrl || assets.car_image1}
                     alt=''
                     className={`h-16 w-16 rounded-xl cursor-pointer ${imagePreview ? 'object-cover border border-border' : 'border-2 border-dashed border-border'}`}
                     onClick={openFilePicker}
                   />
-                  <input type='file' id='car-image' accept='image/*' hidden onChange={handleImageChange} />
+                  <input type='file' id='car-image' accept='image/*' hidden aria-label='Upload vehicle photo' onChange={handleImageChange} />
                 </div>
-                <p className='text-caption text-text-muted mt-1'>Upload a new picture, or keep the existing image URL.</p>
+                <p className='text-caption text-text-muted mt-1'>Choose a replacement photo or keep the current image.</p>
                 <Input
                   id='car-image-url'
+                  label='Image URL'
                   type='url'
                   value={imageUrl}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -164,10 +166,10 @@ const EditCar = () => {
                 />
               </div>
 
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
                 <div className='flex flex-col'>
-                  <label className='text-body-sm font-medium text-text mb-1'>Brand</label>
                   <Input
+                    label='Brand'
                     placeholder='e.g. BMW, Mercedes, Toyota'
                     required
                     value={car.brand}
@@ -176,8 +178,8 @@ const EditCar = () => {
                   />
                 </div>
                 <div className='flex flex-col'>
-                  <label className='text-body-sm font-medium text-text mb-1'>Model</label>
                   <Input
+                    label='Model'
                     placeholder='e.g. X5, E-Class, M4'
                     required
                     value={car.model}
@@ -187,11 +189,13 @@ const EditCar = () => {
                 </div>
               </div>
 
-              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
+              <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
                 <div className='flex flex-col'>
-                  <label className='text-body-sm font-medium text-text mb-1'>Year</label>
                   <Input
+                    label='Year'
                     type='number'
+                    min='1900'
+                    max={new Date().getFullYear() + 1}
                     placeholder='2025'
                     required
                     value={car.year}
@@ -200,9 +204,11 @@ const EditCar = () => {
                   />
                 </div>
                 <div className='flex flex-col'>
-                  <label className='text-body-sm font-medium text-text mb-1'>Daily price ({currency})</label>
                   <Input
+                    label={`Daily price (${currency})`}
                     type='number'
+                    min='1'
+                    step='0.01'
                     placeholder='100'
                     required
                     value={car.pricePerDay}
@@ -211,8 +217,8 @@ const EditCar = () => {
                   />
                 </div>
                 <div className='flex flex-col'>
-                  <label className='text-body-sm font-medium text-text mb-1'>Category</label>
                   <Select
+                    label='Category'
                     required
                     value={car.category}
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setCar({ ...car, category: e.target.value })}
@@ -224,10 +230,10 @@ const EditCar = () => {
                 </div>
               </div>
 
-              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
+              <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
                 <div className='flex flex-col'>
-                  <label className='text-body-sm font-medium text-text mb-1'>Transmission</label>
                   <Select
+                    label='Transmission'
                     required
                     value={car.transmission}
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setCar({ ...car, transmission: e.target.value })}
@@ -238,8 +244,8 @@ const EditCar = () => {
                   </Select>
                 </div>
                 <div className='flex flex-col'>
-                  <label className='text-body-sm font-medium text-text mb-1'>Fuel type</label>
                   <Select
+                    label='Fuel type'
                     required
                     value={car.fuel_type}
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setCar({ ...car, fuel_type: e.target.value })}
@@ -250,9 +256,11 @@ const EditCar = () => {
                   </Select>
                 </div>
                 <div className='flex flex-col'>
-                  <label className='text-body-sm font-medium text-text mb-1'>Seating capacity</label>
                   <Input
+                    label='Seating capacity'
                     type='number'
+                    min='1'
+                    max='12'
                     placeholder='4'
                     required
                     value={car.seating_capacity}
@@ -263,8 +271,8 @@ const EditCar = () => {
               </div>
 
               <div className='flex flex-col'>
-                <label className='text-body-sm font-medium text-text mb-1'>Location</label>
                 <Select
+                  label='Pickup location'
                   required
                   value={car.location}
                   onChange={(e: ChangeEvent<HTMLSelectElement>) => setCar({ ...car, location: e.target.value })}
@@ -276,12 +284,11 @@ const EditCar = () => {
               </div>
 
               <div className='flex flex-col'>
-                <label className='text-body-sm font-medium text-text mb-1'>Description</label>
-                <textarea
+                <Textarea
+                  label='Description'
                   rows={4}
-                  placeholder='Describe your car...'
+                  placeholder='Describe your car, its condition, and what makes it a good fit for a trip.'
                   required
-                  className='w-full px-4 py-3 rounded-lg border border-border bg-surface text-text placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-primary'
                   value={car.description}
                   onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setCar({ ...car, description: e.target.value })}
                 />

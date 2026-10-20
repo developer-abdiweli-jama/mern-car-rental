@@ -30,11 +30,18 @@ const Login = () => {
   };
 
   return (
-    <div className='min-h-[calc(100vh-160px)] bg-background flex items-center justify-center px-6'>
-      <Card padding='none' className='w-full max-w-md'>
-        <div className='p-8 md:p-10 text-center'>
-          <h2 className='text-h2 font-bold text-text mb-2'>Welcome back</h2>
-          <p className='text-body-sm text-text-muted mb-8'>Sign in to your account</p>
+    <div className='min-h-[calc(100vh-160px)] bg-background px-4 py-12 sm:px-6'>
+      <div className='mx-auto grid w-full max-w-5xl overflow-hidden rounded-3xl border border-border bg-surface shadow-soft md:grid-cols-[0.9fr_1.1fr]'>
+        <aside className='hidden flex-col justify-between bg-text p-10 text-white md:flex'>
+          <p className='text-sm font-semibold uppercase tracking-[0.18em] text-white/70'>Hirgal Car Rental</p>
+          <div><p className='mb-3 text-sm font-medium text-primary-light'>Your next journey starts here</p><h1 className='text-3xl font-semibold leading-tight'>The right car makes every trip better.</h1></div>
+          <p className='text-sm text-white/65'>Browse trusted vehicles and manage every booking in one place.</p>
+        </aside>
+        <Card padding='none' className='w-full'>
+        <div className='p-7 sm:p-10'>
+          <p className='mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-primary'>Welcome back</p>
+          <h2 className='text-h2 font-bold text-text mb-2'>Sign in to your account</h2>
+          <p className='text-body-sm text-text-muted mb-8'>Sign in to continue to your account.</p>
           {error && <Alert variant='error' title='Sign in failed'>{error}</Alert>}
           <form onSubmit={handleSubmit} className='space-y-4'>
             <Input
@@ -44,7 +51,6 @@ const Login = () => {
               required
               value={form.email}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, email: e.target.value })}
-              error={error || undefined}
             />
             <Input
               label='Password'
@@ -53,9 +59,8 @@ const Login = () => {
               required
               value={form.password}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, password: e.target.value })}
-              error={error || undefined}
             />
-            <Button type='submit' isLoading={loading} className='w-full'>
+            <Button type='submit' isLoading={loading} className='mt-2 w-full'>
               Sign in
             </Button>
           </form>
@@ -66,7 +71,8 @@ const Login = () => {
             </Link>
           </p>
         </div>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 };

@@ -21,6 +21,9 @@ lerna-debug.log*
 .env.local
 .env.*.local
 
+# TypeScript incremental build info
+*.tsbuildinfo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -166,7 +166,7 @@ const CarDetails = () => {
             </CardHeader>
             <CardContent className='space-y-5'>
               <form onSubmit={handleSubmit} className='space-y-4'>
-                <div>
+                <div className='rounded-xl border border-border bg-background p-4'>
                   <Input
                     label='Pickup date'
                     id='pickup-date'
@@ -174,25 +174,26 @@ const CarDetails = () => {
                     value={pickupDate}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setPickupDate(e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
+                    max={returnDate || undefined}
                     required
                     error={available === false ? 'Not available for selected dates' : undefined}
                   />
                 </div>
-                <div>
+                <div className='rounded-xl border border-border bg-background p-4'>
                   <Input
                     label='Return date'
                     id='return-date'
                     type='date'
                     value={returnDate}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setReturnDate(e.target.value)}
-                    min={new Date().toISOString().split('T')[0]}
+                    min={pickupDate || new Date().toISOString().split('T')[0]}
                     required
                     error={available === false ? 'Not available for selected dates' : undefined}
                   />
                 </div>
                 {estimatedTotal && (
                   <div className='flex items-center justify-between text-body-sm'>
-                    <span className='text-text-muted'>Estimated total</span>
+                    <span className='text-text-muted'>Estimated total · {days} {days === 1 ? 'day' : 'days'}</span>
                     <span className='font-semibold text-text'>{currency} {estimatedTotal}</span>
                   </div>
                 )}

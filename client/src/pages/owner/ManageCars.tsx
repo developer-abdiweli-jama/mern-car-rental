@@ -82,20 +82,21 @@ const ManageCars = () => {
             />
           ) : (
             <div className='overflow-x-auto'>
-              <table className='w-full text-left text-sm text-text-muted'>
-                <thead className='bg-background text-text'>
+              <table className='w-full min-w-[760px] text-left text-sm text-text-muted'>
+                <caption className='sr-only'>Your vehicle listings and management actions</caption>
+                <thead className='sticky top-0 z-10 border-b border-border bg-background text-text'>
                   <tr>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm'>Car</th>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm'>Category</th>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm'>Price/day</th>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm'>Location</th>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm'>Status</th>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm' style={{ textAlign: 'right' }}>Actions</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm'>Car</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm'>Category</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm'>Price/day</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm'>Location</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm'>Status</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm text-right'>Actions</th>
                   </tr>
                 </thead>
                 <tbody className='divide-y divide-border'>
                   {cars.map((car) => (
-                    <tr key={car._id} className='bg-surface hover:bg-muted transition-colors'>
+                    <tr key={car._id} className='bg-surface transition-colors hover:bg-background'>
                       <td className='px-6 py-4'>
                         <div className='flex items-center gap-3'>
                           <img
@@ -120,8 +121,8 @@ const ManageCars = () => {
                       </td>
                       <td className='px-6 py-4 text-right'>
                         <div className='flex items-center justify-end gap-2'>
-                          <Button variant='outline' size='sm' onClick={() => navigate(`/owner/edit-car/${car._id}`)}>Edit</Button>
-                          <Button variant='danger' size='sm' onClick={() => handleDelete(car._id)}>Delete</Button>
+                          <Button variant='outline' size='sm' aria-label={`Edit ${car.brand} ${car.model}`} onClick={() => navigate(`/owner/edit-car/${car._id}`)}>Edit</Button>
+                          <Button variant='danger' size='sm' aria-label={`Delete ${car.brand} ${car.model}`} onClick={() => handleDelete(car._id)}>Delete</Button>
                         </div>
                       </td>
                     </tr>

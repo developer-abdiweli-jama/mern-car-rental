@@ -42,34 +42,29 @@ const Hero = () => {
           Discover curated vehicles with transparent pricing, flexible pickup, and seamless booking.
         </p>
 
-        <form onSubmit={handleSearch} className='flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-surface/95 backdrop-blur rounded-2xl p-5 shadow-lg border border-white/20'>
+        <form onSubmit={handleSearch} aria-label='Search available vehicles' className='grid w-full grid-cols-1 gap-4 rounded-2xl border border-white/30 bg-surface/95 p-5 text-left shadow-xl backdrop-blur sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_auto] lg:items-end'>
           <Input
             label='Pickup location'
             placeholder='City or address'
             value={pickupLocation}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setPickupLocation(e.target.value)}
           />
-          <div className='flex flex-col gap-1'>
-            <label className='sr-only'>Pickup date</label>
-            <input
-              type='date'
-              value={pickupDate}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setPickupDate(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              className='w-full sm:w-48 px-4 py-3 rounded-lg border border-border bg-white text-text placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-primary'
-            />
-          </div>
-          <div className='flex flex-col gap-1'>
-            <label className='sr-only'>Return date</label>
-            <input
-              type='date'
-              value={returnDate}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setReturnDate(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              className='w-full sm:w-48 px-4 py-3 rounded-lg border border-border bg-white text-text placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-primary'
-            />
-          </div>
-          <Button type='submit' className='w-full sm:w-auto'>
+          <Input
+            label='Pickup date'
+            type='date'
+            value={pickupDate}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setPickupDate(e.target.value)}
+            min={new Date().toISOString().split('T')[0]}
+            max={returnDate || undefined}
+          />
+          <Input
+            label='Return date'
+            type='date'
+            value={returnDate}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setReturnDate(e.target.value)}
+            min={pickupDate || new Date().toISOString().split('T')[0]}
+          />
+          <Button type='submit' className='w-full lg:w-auto'>
             Search vehicles
           </Button>
         </form>

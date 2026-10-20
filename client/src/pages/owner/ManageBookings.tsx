@@ -79,15 +79,16 @@ const ManageBookings = () => {
             />
           ) : (
             <div className='overflow-x-auto'>
-              <table className='w-full text-left text-sm text-text-muted'>
-                <thead className='bg-background text-text'>
+              <table className='w-full min-w-[820px] text-left text-sm text-text-muted'>
+                <caption className='sr-only'>Customer reservations for your vehicles</caption>
+                <thead className='sticky top-0 z-10 border-b border-border bg-background text-text'>
                   <tr>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm'>Customer</th>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm'>Vehicle</th>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm'>Rental period</th>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm'>Total price</th>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm'>Status</th>
-                    <th className='px-6 py-4 font-medium text-text text-body-sm text-right'>Actions</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm'>Customer</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm'>Vehicle</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm'>Rental period</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm'>Total price</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm'>Status</th>
+                    <th scope='col' className='px-6 py-4 font-medium text-text text-body-sm text-right'>Actions</th>
                   </tr>
                 </thead>
                 <tbody className='divide-y divide-border'>
@@ -96,7 +97,7 @@ const ManageBookings = () => {
                     const car = booking.car as Car;
                     const style = statusStyle[booking.status] ?? statusStyle.pending;
                     return (
-                      <tr key={booking._id} className='bg-surface hover:bg-muted transition-colors'>
+                      <tr key={booking._id} className='bg-surface transition-colors hover:bg-background'>
                         <td className='px-6 py-4'>
                           <p className='font-medium text-text'>{user.name || 'Customer'}</p>
                           <p className='text-caption text-text-muted'>{user.email}</p>
@@ -118,12 +119,12 @@ const ManageBookings = () => {
                         <td className='px-6 py-4 text-right'>
                           {booking.status === 'pending' && (
                             <>
-                              <Button variant='success' size='sm' onClick={() => updateStatus(booking._id, 'confirmed')} className='mr-2'>Confirm</Button>
-                              <Button variant='danger' size='sm' onClick={() => updateStatus(booking._id, 'cancelled')}>Cancel</Button>
+                              <Button variant='success' size='sm' aria-label={`Confirm booking for ${user.name || 'customer'}`} onClick={() => updateStatus(booking._id, 'confirmed')} className='mr-2'>Confirm</Button>
+                              <Button variant='danger' size='sm' aria-label={`Cancel booking for ${user.name || 'customer'}`} onClick={() => updateStatus(booking._id, 'cancelled')}>Cancel</Button>
                             </>
                           )}
                           {booking.status === 'confirmed' && (
-                            <Button variant='primary' size='sm' onClick={() => updateStatus(booking._id, 'completed')}>Mark completed</Button>
+                            <Button variant='primary' size='sm' aria-label={`Mark booking for ${user.name || 'customer'} completed`} onClick={() => updateStatus(booking._id, 'completed')}>Mark completed</Button>
                           )}
                         </td>
                       </tr>

@@ -11,6 +11,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, helper, id, className, ...props }, ref) => {
     const generatedId = React.useId();
     const inputId = id || generatedId;
+    const descriptionIds = [helper ? `${inputId}-helper` : null, error ? `${inputId}-error` : null].filter(Boolean).join(' ') || undefined;
     return (
       <div className='flex flex-col gap-1' data-testid='input-wrapper'>
         {label && (
@@ -22,12 +23,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           aria-invalid={error ? true : undefined}
-          aria-describedby={helper || error ? `${inputId}-desc` : undefined}
+          aria-describedby={descriptionIds}
           className={`
             w-full px-4 py-3 rounded-lg border
             bg-surface text-text
             placeholder:text-text-muted
-            focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:border-primary
             disabled:opacity-50 disabled:cursor-not-allowed
             transition-colors duration-200
             ${error ? 'border-error focus-visible:ring-error' : 'border-border'}
@@ -36,12 +37,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {helper && (
-          <p id={`${inputId}-desc`} className='text-caption text-text-muted'>
+          <p id={`${inputId}-helper`} className='text-caption text-text-muted'>
             {helper}
           </p>
         )}
         {error && (
-          <p id={`${inputId}-desc`} className='text-caption text-error'>
+          <p id={`${inputId}-error`} className='text-caption text-error'>
             {error}
           </p>
         )}
@@ -64,6 +65,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ label, error, helper, id, children, className, ...props }, ref) => {
     const generatedId = React.useId();
     const selectId = id || generatedId;
+    const descriptionIds = [helper ? `${selectId}-helper` : null, error ? `${selectId}-error` : null].filter(Boolean).join(' ') || undefined;
     return (
       <div className='flex flex-col gap-1' data-testid='select-wrapper'>
         {label && (
@@ -75,10 +77,11 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={selectId}
           aria-invalid={error ? true : undefined}
+          aria-describedby={descriptionIds}
           className={`
             w-full px-4 py-3 rounded-lg border
             bg-surface text-text
-            focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:border-primary
             disabled:opacity-50 disabled:cursor-not-allowed
             transition-colors duration-200
             ${error ? 'border-error focus-visible:ring-error' : 'border-border'}
@@ -94,12 +97,12 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           {children}
         </select>
         {helper && (
-          <p id={`${selectId}-desc`} className='text-caption text-text-muted'>
+          <p id={`${selectId}-helper`} className='text-caption text-text-muted'>
             {helper}
           </p>
         )}
         {error && (
-          <p id={`${selectId}-desc`} className='text-caption text-error'>
+          <p id={`${selectId}-error`} className='text-caption text-error'>
             {error}
           </p>
         )}
@@ -121,6 +124,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ label, error, helper, id, className, ...props }, ref) => {
     const generatedId = React.useId();
     const textareaId = id || generatedId;
+    const descriptionIds = [helper ? `${textareaId}-helper` : null, error ? `${textareaId}-error` : null].filter(Boolean).join(' ') || undefined;
     return (
       <div className='flex flex-col gap-1' data-testid='textarea-wrapper'>
         {label && (
@@ -132,11 +136,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={textareaId}
           aria-invalid={error ? true : undefined}
-          aria-describedby={helper || error ? `${textareaId}-desc` : undefined}
+          aria-describedby={descriptionIds}
           className={`
             w-full px-4 py-3 rounded-lg border
             bg-surface text-text
-            focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:border-primary
             disabled:opacity-50 disabled:cursor-not-allowed
             transition-colors duration-200 resize-none
             ${error ? 'border-error focus-visible:ring-error' : 'border-border'}
@@ -145,12 +149,12 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
         />
         {helper && (
-          <p id={`${textareaId}-desc`} className='text-caption text-text-muted'>
+          <p id={`${textareaId}-helper`} className='text-caption text-text-muted'>
             {helper}
           </p>
         )}
         {error && (
-          <p id={`${textareaId}-desc`} className='text-caption text-error'>
+          <p id={`${textareaId}-error`} className='text-caption text-error'>
             {error}
           </p>
         )}

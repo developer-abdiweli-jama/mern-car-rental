@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { assets } from '../assets/assets';
 import { useAuth } from '../context/useAuth';
 import { Button } from './ui/button';
+import { Input } from './ui/input';
 import BrandLogo from './BrandLogo';
 
 const menuLinks = [
@@ -156,8 +157,8 @@ const Navbar = () => {
           </div>
           <div className='p-6 border-t border-border'>
             <form onSubmit={handleSearchSubmit} className='flex gap-2'>
-              <input
-                className='flex-1 px-4 py-3 rounded-lg border border-border bg-surface text-text placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-primary'
+              <Input
+                aria-label='Search cars by location'
                 placeholder='Search cars by location'
                 value={searchQuery}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}

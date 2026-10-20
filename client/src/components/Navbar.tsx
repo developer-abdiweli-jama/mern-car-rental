@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { assets } from '../assets/assets';
 import { useAuth } from '../context/useAuth';
 import { Button } from './ui/button';
+import BrandLogo from './BrandLogo';
 
 const menuLinks = [
   { name: 'Home', path: '/' },
@@ -59,8 +60,8 @@ const Navbar = () => {
   return (
     <nav className='border-b border-border bg-surface sticky top-0 z-40 shadow-soft' aria-label='Main navigation'>
       <div className='container flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0 px-0 py-3'>
-        <Link to='/' className='flex items-center gap-2' aria-label='CarRental home'>
-          <img src={assets.logo} alt='CarRental' className='h-8' />
+        <Link to='/' className='flex items-center' aria-label='Hirgal Car Rental home'>
+          <BrandLogo className='text-lg sm:text-xl' />
         </Link>
 
         <div className='flex items-center gap-3 md:gap-6 w-full md:w-auto justify-end'>

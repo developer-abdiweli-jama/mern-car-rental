@@ -35,7 +35,7 @@ const Register = () => {
       <Card padding='none' className='w-full max-w-md'>
         <div className='p-8 md:p-10 text-center'>
           <h2 className='text-h2 font-bold text-text mb-2'>Create account</h2>
-          <p className='text-body-sm text-text-muted mb-8'>Join CarRental today</p>
+          <p className='text-body-sm text-text-muted mb-8'>Join Hirgal Car Rental today</p>
           {error && <Alert variant='error' title='Registration failed'>{error}</Alert>}
           <form onSubmit={handleSubmit} className='space-y-4'>
             <Input

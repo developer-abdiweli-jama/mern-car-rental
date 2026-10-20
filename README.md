@@ -1,4 +1,4 @@
-# 🚗 MERN Car Rental Platform
+# 🚗 Hirgal Car Rental
 
 A complete, production-ready full-stack car rental platform built with the MERN stack (MongoDB, Express, React, Node.js). Features vehicle browsing and search, real-time availability, server-side rental pricing, concurrency-safe booking, JWT authentication, role-based access (customer / owner / admin), and an owner dashboard for fleet and booking management.
 

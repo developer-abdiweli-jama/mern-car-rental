@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { assets } from '../assets/assets';
+import BrandLogo from './BrandLogo';
 
 const socialLinks = [
   { name: 'Facebook', href: '#', src: assets.facebook_logo },
@@ -32,8 +33,8 @@ const Footer = () => {
       <div className='container py-10 md:py-16'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12'>
           <div className='col-span-1 lg:col-span-1'>
-            <Link to='/' aria-label='CarRental home' className='inline-flex mb-4'>
-              <img src={assets.logo} alt='CarRental' className='h-7' />
+            <Link to='/' aria-label='Hirgal Car Rental home' className='inline-flex mb-4'>
+              <BrandLogo className='text-base sm:text-lg' />
             </Link>
             <p className='text-body-sm text-text-muted max-w-xs'>
               Premium car rental service with a wide selection of vehicles for every journey.
@@ -69,7 +70,7 @@ const Footer = () => {
         </div>
         <div className='border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4'>
           <p className='text-body-sm text-text-muted'>
-            © {new Date().getFullYear()} CarRental. All rights reserved.
+            © {new Date().getFullYear()} Hirgal Car Rental. All rights reserved.
           </p>
           <ul className='flex items-center gap-6 text-body-sm'>
             <li><a href='#' className='text-text-muted hover:text-primary transition-colors'>Privacy</a></li>

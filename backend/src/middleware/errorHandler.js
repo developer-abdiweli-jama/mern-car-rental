@@ -34,6 +34,8 @@ const sendErrorProd = (err, res) => {
 };
 
 const errorHandler = (err, req, res, next) => {
+  // Express requires four parameters to identify this as error middleware.
+  void next;
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 

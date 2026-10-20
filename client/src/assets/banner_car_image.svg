@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="600" viewBox="0 0 1600 600">
+  <defs>
+    <linearGradient id="gb" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0558fe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a9cfff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shb" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="20" />
+      <feOffset dx="0" dy="15" result="ob" />
+      <feComponentTransfer><feFuncA type="linear" slope="0.35" /></feComponentTransfer>
+      <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+  <rect width="1600" height="600" fill="url(#gb)" filter="url(#shb)" />
+  <path d="M1200 300 L1320 220 L1560 220 L1600 300 L1600 380 L1560 380 L1320 380 Z" fill="#ffffff" opacity="0.95" />
+  <path d="M1260 240 L1340 200 L1500 200 L1580 240 Z" fill="#e5e7eb" />
+  <circle cx="1280" cy="390" r="34" fill="#0f172a" stroke="#334155" stroke-width="4" />
+  <circle cx="1280" cy="390" r="16" fill="#475569" />
+  <circle cx="1460" cy="390" r="34" fill="#0f172a" stroke="#334155" stroke-width="4" />
+  <circle cx="1460" cy="390" r="16" fill="#475569" />
+  <text x="280" y="300" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#ffffff" text-anchor="start">List Your Car</text>
+  <text x="280" y="360" font-family="Arial, sans-serif" font-size="24" fill="#f1f5f9" text-anchor="start">Monetize your vehicle effortlessly</text>
+  <text x="280" y="390" font-family="Arial, sans-serif" font-size="24" fill="#e2e8f0" text-anchor="start">1600x600 High Resolution</text>
+</svg>

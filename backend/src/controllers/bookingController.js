@@ -10,7 +10,7 @@ export const createBooking = async (req, res, next) => {
   let car;
   try {
     car = await Car.findById(carId);
-  } catch (err) {
+  } catch {
     return next(AppError('Invalid vehicle id', 400));
   }
   if (!car) return next(AppError('Vehicle not found', 404));
@@ -119,7 +119,6 @@ export const updateBookingStatus = async (req, res, next) => {
   }
 
   booking.status = status;
-  if (status === 'paid') booking.paymentStatus = 'paid';
   await booking.save();
 
   return res.json({ success: true, data: { booking } });

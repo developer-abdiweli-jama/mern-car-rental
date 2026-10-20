@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { assets } from '../assets/assets';
 import Loader from '../components/Loader';
 import api from '../api/axios';
@@ -9,14 +9,15 @@ import { getImageUrl } from '../utils/imageUrl';
 const CarDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
 
   const [car, setCar] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [pickupDate, setPickupDate] = useState('');
-  const [returnDate, setReturnDate] = useState('');
+  const [pickupDate, setPickupDate] = useState(searchParams.get('pickupDate') || '');
+  const [returnDate, setReturnDate] = useState(searchParams.get('returnDate') || '');
   const [booking, setBooking] = useState(null);
   const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingError, setBookingError] = useState(null);
@@ -112,7 +113,7 @@ const CarDetails = () => {
 
       <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12'>
         <div className='lg:col-span-2'>
-          <img src={getImageUrl(car.image) || assets.car_image1} alt={car.brand + ' ' + car.model} className='w-full h-96 md:max-h-100 object-cover rounded-xl mb-6 shadow-md' />
+          <img src={getImageUrl(car.image) || assets.car_image1} onError={(event) => { event.currentTarget.src = assets.car_image1; }} alt={car.brand + ' ' + car.model} className='w-full h-96 md:max-h-100 object-cover rounded-xl mb-6 shadow-md' />
           {!car.isAvailable && (
             <p className='text-red-600 font-medium mb-4'>Currently unavailable for rent</p>
           )}

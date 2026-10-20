@@ -9,13 +9,16 @@ import {
 import { authenticate, authorize } from '../middleware/auth.js';
 import { upload } from '../config/multer.js';
 import { validate, validators, rule } from '../middleware/validate.js';
+import asyncHandler from '../middleware/asyncHandler.js';
 
 const router = Router();
 
-router.get('/', getCars);
-router.get('/:id', getCarById);
+router.get('/', asyncHandler(getCars));
+router.get('/:id', validate({
+  id: { source: 'params', required: true, rules: [rule(validators.objectId, 'Invalid vehicle id')] },
+}), asyncHandler(getCarById));
 
-router.use(authenticate);
+router.use(asyncHandler(authenticate));
 
 router.post(
   '/',
@@ -32,22 +35,32 @@ router.post(
     pricePerDay: { required: true, rules: [validators.required, rule(validators.min(0), 'Price must be positive')] },
     location: { required: true, rules: [validators.required], message: 'Location is required' },
     description: { rules: [rule(validators.maxLength(2000), 'Description too long')] },
+    image: { optional: true, rules: [
+      rule(validators.maxLength(2048), 'Image URL is too long'),
+      rule((value) => {
+        try {
+          return ['http:', 'https:'].includes(new URL(value).protocol);
+        } catch {
+          return false;
+        }
+      }, 'Image must be a valid HTTP or HTTPS URL'),
+    ] },
   }),
-  createCar
+  asyncHandler(createCar)
 );
 
 router.put(
   '/:id',
   authorize('owner', 'admin'),
   validate({ id: { source: 'params', required: true, rules: [rule(validators.objectId, 'Invalid vehicle id')] } }),
-  updateCar
+  asyncHandler(updateCar)
 );
 
 router.delete(
   '/:id',
   authorize('owner', 'admin'),
   validate({ id: { source: 'params', required: true, rules: [rule(validators.objectId, 'Invalid vehicle id')] } }),
-  deleteCar
+  asyncHandler(deleteCar)
 );
 
 export default router;

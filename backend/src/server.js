@@ -1,5 +1,4 @@
 import express from 'express';
-import { join } from 'path';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit';
@@ -9,6 +8,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import logger from './config/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { UPLOAD_DIR } from './config/multer.js';
 import authRoutes from './routes/authRoutes.js';
 import carRoutes from './routes/carRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
@@ -30,10 +30,16 @@ app.use(
 );
 
 // CORS
-const allowedOrigin = process.env.CORS_ORIGIN || '*';
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(null, false);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -62,7 +68,9 @@ app.get('/api/health', (req, res) => {
 });
 
 // Routes
-app.use('/uploads', express.static(join(process.cwd(), 'public', 'uploads')));
+app.use('/uploads', express.static(UPLOAD_DIR, {
+  setHeaders: (res) => res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin'),
+}));
 app.use('/api/auth', authRoutes);
 app.use('/api/cars', carRoutes);
 app.use('/api/bookings', bookingRoutes);

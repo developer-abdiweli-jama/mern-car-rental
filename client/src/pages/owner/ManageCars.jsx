@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { assets } from '../../assets/assets';
 import Title from '../../components/owner/Title';
 import { getImageUrl } from '../../utils/imageUrl';
 import api from '../../api/axios';
@@ -73,7 +74,7 @@ const ManageCars = () => {
               cars.map((car) => (
                 <tr key={car._id} className='border-t border-borderColor'>
                   <td className='p-3 flex items-center gap-3'>
-                    <img src={getImageUrl(car.image)} alt='' className='h-12 w-20 object-cover rounded-md' />
+                    <img src={getImageUrl(car.image)} onError={(event) => { event.currentTarget.src = assets.car_image1; }} alt='' className='h-12 w-20 object-cover rounded-md' />
                     <div>
                       <p className='font-medium'>{car.brand} {car.model}</p>
                       <p className='text-xs text-gray-500'>{car.seating_capacity} • {car.transmission} • {car.fuel_type}</p>

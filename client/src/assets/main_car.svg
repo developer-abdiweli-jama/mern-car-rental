@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="gh" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shh" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="20" />
+      <feOffset dx="0" dy="15" result="ob" />
+      <feComponentTransfer><feFuncA type="linear" slope="0.4" /></feComponentTransfer>
+      <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#gh)" />
+  <path d="M240 480 L320 380 L1080 380 L1240 480 L1360 480 L1360 620 L240 620 Z" fill="#2563eb" stroke="#1e40af" stroke-width="6" filter="url(#shh)" />
+  <path d="M400 380 L540 320 L960 320 L1100 380 Z" fill="#1e40af" />
+  <circle cx="380" cy="630" r="52" fill="#0f172a" stroke="#334155" stroke-width="8" />
+  <circle cx="380" cy="630" r="26" fill="#475569" />
+  <circle cx="1040" cy="630" r="52" fill="#0f172a" stroke="#334155" stroke-width="8" />
+  <circle cx="1040" cy="630" r="26" fill="#475569" />
+  <path d="M430 395 L520 345 L900 345 L990 395 Z" fill="#93c5fd" stroke="#60a5fa" stroke-width="4" />
+  <text x="800" y="800" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="#f8fafc" text-anchor="middle">Luxury Cars on Rent</text>
+  <text x="800" y="860" font-family="Arial, sans-serif" font-size="36" fill="#cbd5e1" text-anchor="middle">1600x900 High Resolution</text>
+</svg>

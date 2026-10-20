@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Title from '../../components/owner/Title'
 import { assets } from '../../assets/assets'
 import api from '../../api/axios'
@@ -13,6 +13,7 @@ const AddCar = () => {
 
   const [image, setImage] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
+  const [imageUrl, setImageUrl] = useState('')
   const [car, setCar] = useState({
     brand: '',
     model: '',
@@ -29,9 +30,14 @@ const AddCar = () => {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
 
+  useEffect(() => () => {
+    if (imagePreview?.startsWith('blob:')) URL.revokeObjectURL(imagePreview)
+  }, [imagePreview])
+
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
+      setImageUrl('')
       setImage(file)
       setImagePreview(URL.createObjectURL(file))
     }
@@ -56,6 +62,7 @@ const AddCar = () => {
       formData.append('location', car.location)
       formData.append('description', car.description)
       if (image) formData.append('image', image)
+      else if (imageUrl.trim()) formData.append('image', imageUrl.trim())
 
       await api.post('/cars', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -68,6 +75,7 @@ const AddCar = () => {
       })
       setImage(null)
       setImagePreview(null)
+      setImageUrl('')
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to list car')
     } finally {
@@ -92,7 +100,7 @@ const AddCar = () => {
           <label className='block text-sm font-medium mb-2'>Car Image</label>
           <div className='flex items-center gap-4'>
             <img
-              src={imagePreview || assets.upload_icon}
+              src={imagePreview || imageUrl || assets.upload_icon}
               alt=''
               className={`h-16 w-16 rounded cursor-pointer ${imagePreview ? 'object-cover border' : 'border-dashed border-borderColor'}`}
               onClick={() => document.getElementById('car-image').click()}
@@ -100,6 +108,20 @@ const AddCar = () => {
             <input type='file' id='car-image' accept='image/*' hidden onChange={handleImageChange} />
           </div>
           <p className='text-xs text-gray-500 mt-1'>Upload a picture of your car</p>
+          <label htmlFor='car-image-url' className='block font-medium mt-4 mb-1'>Or paste an image URL</label>
+          <input
+            id='car-image-url'
+            type='url'
+            value={imageUrl}
+            onChange={(e) => {
+              setImageUrl(e.target.value)
+              setImage(null)
+              setImagePreview(null)
+            }}
+            placeholder='https://images.example.com/car.jpg'
+            className='px-3 py-2 border border-borderColor rounded-md outline-none focus:ring-2 focus:ring-primary w-full'
+          />
+          <p className='text-xs text-gray-500 mt-1'>A public HTTPS image URL works on the live site without Cloudinary. File uploads need Cloudinary configured on the server.</p>
         </div>
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>

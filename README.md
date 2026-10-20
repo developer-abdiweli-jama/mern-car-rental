@@ -46,14 +46,14 @@ mern-car-rental/
 - Vehicle details with server-computed rental total and availability check
 - Booking flow with server-side price calculation and date validation
 - Booking history ("My Bookings") with status and cancellation
-- Registration / login / logout (JWT session in an httpOnly cookie)
+- Customer registration / login / logout (JWT session in an httpOnly cookie)
 
 ### Owner / admin experience
 - Owner dashboard (cars, bookings, pending/confirmed counts, monthly revenue)
 - Add a vehicle (with image upload)
 - Manage cars (list, availability, delete)
 - Manage bookings (confirm / complete / cancel)
-- Role-protected routes (owner/admin only)
+- Role-protected routes (owner/admin only; production signup cannot create privileged accounts)
 
 ### Booking integrity (server-enforced)
 - Rejects past pickup dates and return dates not after pickup
@@ -66,7 +66,7 @@ mern-car-rental/
 - JWT access token in httpOnly cookie (secure/sameSite in production)
 - bcrypt password hashing (salt 12)
 - Role-based authorization (customer / owner / admin)
-- CORS with credentials, configurable allowed origin
+- CORS with credentials and an explicit comma-separated origin allowlist
 - Rate limiting on `/api`
 - Helmet security headers, express-mongo-sanitize (NoSQL injection protection)
 - Request body size limits (1 MB)
@@ -80,7 +80,7 @@ mern-car-rental/
 | Frontend | React 19, Vite, Tailwind CSS, React Router, Axios |
 | Backend | Node.js, Express, MongoDB, Mongoose |
 | Auth | JWT (httpOnly cookie), bcrypt |
-| File upload | Multer (local disk, served statically) |
+| Car images | Public image URLs; optional Multer uploads with Cloudinary in production |
 | Testing | Backend: Jest + Supertest; Frontend: Vitest + React Testing Library |
 | Lint | ESLint (flat config) |
 
@@ -129,6 +129,11 @@ JWT_EXPIRES_IN=7d
 COOKIE_SECURE=false        # 'true' behind HTTPS in production
 COOKIE_SAME_SITE=Lax
 CORS_ORIGIN=http://localhost:5173
+DEMO_OWNER_EMAIL=owner@example.com
+DEMO_OWNER_PASSWORD=change_this_password
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 ```
 
 **`client/.env`**
@@ -156,6 +161,17 @@ Frontend (terminal 2):
 cd client
 npm run dev      # http://localhost:5173
 ```
+
+### 5. Add portfolio demo cars
+
+The seed command upserts six sample cars with Unsplash photos and a fleet-owner account. Set `DEMO_OWNER_EMAIL` and `DEMO_OWNER_PASSWORD` in `backend/.env`, then run:
+
+```bash
+cd backend
+npm run seed
+```
+
+The command is safe to rerun: it updates those six listings instead of duplicating them. The sample photos are hotlinked from Unsplash; use real listing photos and review image rights before presenting this as a commercial fleet.
 
 ## 🧪 Testing
 
@@ -211,7 +227,7 @@ Base: `http://localhost:5000/api` (all mutating endpoints require a session cook
 ## 🔐 Authentication & Authorization
 
 - Sessions use a JWT access token stored in an **httpOnly cookie** (`token`), so the token is not accessible to client-side JavaScript (XSS protection).
-- `COOKIE_SECURE` must be `true` behind HTTPS; `COOKIE_SAME_SITE` defaults to `Lax`.
+- Local cookies use `SameSite=Lax`; the Vercel + Render deployment uses secure `SameSite=None` cookies because the frontend and API have different origins.
 - Roles: `customer` (default), `owner`, `admin`.
 - Customers can only view/cancel their own bookings. Owners/admins manage their vehicles and bookings. Admins can modify any vehicle/booking.
 
@@ -224,11 +240,17 @@ Base: `http://localhost:5000/api` (all mutating endpoints require a session cook
 - A per-car atomic lock serializes concurrent booking attempts.
 - Status transitions: `pending → {confirmed, cancelled}`, `confirmed → {completed, cancelled}`. `completed`/`cancelled` are terminal.
 
-## 🚀 Deployment
+## 🚀 Deployment: Vercel + Render + MongoDB Atlas
 
-Build the frontend (`npm run build` in `client/`) and serve `client/dist` with a static host (Vercel, Netlify, etc.), setting `VITE_API_URL` to the production backend origin.
+The project uses Mongoose, so MongoDB Atlas is the matching database. Supabase's PostgreSQL is not a drop-in replacement for this backend.
 
-Run the backend (`npm start` in `backend/`) on a Node host (Render, Railway, fly.io, or a VPS) with a production MongoDB (MongoDB Atlas or self-managed). Set `NODE_ENV=production`, `COOKIE_SECURE=true`, `COOKIE_SAME_SITE=None`, and restrict `CORS_ORIGIN` to your frontend domain.
+1. Create a MongoDB Atlas database and copy its connection string. Add the Render service from `render.yaml`; set `MONGO_URI` to the Atlas string and `CORS_ORIGIN` to the exact Vercel site origin (for example `https://your-project.vercel.app`, without a trailing slash).
+2. Cloudinary is optional when adding cars by image URL. To enable direct file uploads, create a Cloudinary account and set `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` in Render. Render's free filesystem is ephemeral, so local disk is not a safe production upload store.
+3. In Vercel, import the repository and set the project root directory to `client`. Set `VITE_API_URL=/api` and `VITE_CURRENCY=$`. The Vercel config proxies API and upload requests through the frontend origin, which avoids browser third-party-cookie restrictions. If Render assigns a different service URL, update both proxy destinations in `client/vercel.json`.
+4. After Render is live, seed the production database from a trusted local terminal. Set `MONGO_URI`, `DEMO_OWNER_EMAIL`, and `DEMO_OWNER_PASSWORD` in `backend/.env`, then run `npm run seed` from `backend/`. Keep the owner password private and use the account only for the portfolio demo.
+5. Open the Vercel site, confirm `/api/health` is healthy at the Render URL, then sign in with the seeded owner account to review the management pages.
+
+The Render blueprint sets production cookies to `SameSite=None; Secure`. Set `CORS_ORIGIN` to the exact Vercel origin, or list multiple allowed origins separated by commas. Do not add secrets to Vercel; `VITE_*` values are public in the built app.
 
 No Redis, message queues, or Kubernetes are required; the modular monolith scales by adding database indexes and horizontal pod replicas behind a load balancer as traffic grows.
 
@@ -236,7 +258,7 @@ No Redis, message queues, or Kubernetes are required; the modular monolith scale
 
 - Payments (Stripe) are not integrated; `paymentStatus` is tracked but no provider webhook is wired. This is intentionally documented rather than simulated.
 - Email/SMS notifications, reviews/ratings, Google Maps, PWA, and multi-language support are out of scope for this release.
-- Image uploads are stored on local disk; for multi-node deployment, move to object storage (S3/ImageKit) and serve via CDN.
+- Local image uploads are stored on disk. Use a public HTTPS image URL for production unless Cloudinary credentials are configured for persistent file uploads.
 - Rate limit and CORS values should be tuned for production traffic.
 
 ## 📄 License

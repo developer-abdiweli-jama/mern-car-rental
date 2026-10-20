@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: mern-car-rental-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: COOKIE_SECURE
+        value: true
+      - key: COOKIE_SAME_SITE
+        value: None
+      - key: MONGO_URI
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false

@@ -6,11 +6,12 @@ const generateToken = (userId, res) => {
   });
 
   const isProduction = process.env.NODE_ENV === 'production';
+  const sameSite = process.env.COOKIE_SAME_SITE || (isProduction ? 'None' : 'Lax');
 
   res.cookie('token', token, {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: process.env.COOKIE_SAME_SITE || 'Lax',
+    secure: process.env.COOKIE_SECURE === 'true' || (isProduction && sameSite.toLowerCase() === 'none'),
+    sameSite,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     path: '/',
   });

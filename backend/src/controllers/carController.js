@@ -1,9 +1,12 @@
 import { AppError } from '../middleware/errorHandler.js';
 import { Car } from '../models/Car.js';
+import { saveCarImage } from '../services/imageStorage.js';
+
+const escapeRegExp = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const buildFilter = (query) => {
   const filter = {};
-  if (query.location) filter.location = new RegExp(query.location, 'i');
+  if (query.location) filter.location = new RegExp(escapeRegExp(query.location), 'i');
   if (query.category) filter.category = query.category;
   if (query.isAvailable === 'true') filter.isAvailable = true;
   if (query.isAvailable === 'false') filter.isAvailable = false;
@@ -14,9 +17,9 @@ const buildFilter = (query) => {
   }
   if (query.search) {
     filter.$or = [
-      { brand: new RegExp(query.search, 'i') },
-      { model: new RegExp(query.search, 'i') },
-      { location: new RegExp(query.search, 'i') },
+      { brand: new RegExp(escapeRegExp(query.search), 'i') },
+      { model: new RegExp(escapeRegExp(query.search), 'i') },
+      { location: new RegExp(escapeRegExp(query.search), 'i') },
     ];
   }
   return filter;
@@ -52,7 +55,7 @@ export const getCarById = async (req, res, next) => {
 
 export const createCar = async (req, res) => {
   const carData = { ...req.body, owner: req.user._id };
-  if (req.file) carData.image = `/uploads/${req.file.filename}`;
+  if (req.file) carData.image = await saveCarImage(req.file);
   const car = await Car.create(carData);
   return res.status(201).json({ success: true, data: { car } });
 };

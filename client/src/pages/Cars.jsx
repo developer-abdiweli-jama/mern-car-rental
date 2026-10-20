@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
 import CarCard from '../components/CarCard';
@@ -7,9 +8,11 @@ import api from '../api/axios';
 const CATEGORIES = ['SUV', 'Sedan', 'Hatchback', 'Convertible', 'Coupe'];
 
 const Cars = () => {
+  const [searchParams] = useSearchParams();
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(searchParams.get('location') || searchParams.get('search') || '');
+  const [locationFilter, setLocationFilter] = useState(searchParams.get('location') || '');
   const [category, setCategory] = useState('');
   const [total, setTotal] = useState(0);
 
@@ -18,6 +21,7 @@ const Cars = () => {
     try {
       const params = {};
       if (input) params.search = input;
+      if (locationFilter) params.location = locationFilter;
       if (category) params.category = category;
       params.limit = 100;
 
@@ -29,11 +33,11 @@ const Cars = () => {
     } finally {
       setLoading(false);
     }
-  }, [input, category]);
+  }, [input, category, locationFilter]);
 
   useEffect(() => {
     fetchCars();
-  }, [input, category, fetchCars]);
+  }, [fetchCars]);
 
   if (loading) {
     return (
@@ -51,7 +55,10 @@ const Cars = () => {
         <div className='flex items-center bg-white px-4 mt-4 max-w-2xl w-full h-12 rounded-full shadow flex-wrap gap-4 md:nowrap md:flex-no-wrap md:gap-0'>
           <img src={assets.search_icon} alt='search icon' className='w-4.5 h-4.5 mr-2' />
           <input
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {
+              setInput(e.target.value);
+              setLocationFilter('');
+            }}
             value={input}
             type='text'
             placeholder='Search by make, model, brand, or location'
@@ -79,7 +86,11 @@ const Cars = () => {
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-12 max-w-7xl mx-auto'>
             {cars.map((car) => (
               <div key={car._id} className=''>
-                <CarCard car={car} />
+                <CarCard
+                  car={car}
+                  pickupDate={searchParams.get('pickupDate')}
+                  returnDate={searchParams.get('returnDate')}
+                />
               </div>
             ))}
           </div>

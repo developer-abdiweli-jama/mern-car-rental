@@ -2,17 +2,6 @@ import { AppError } from '../middleware/errorHandler.js';
 import { User } from '../models/User.js';
 import { generateToken } from '../middleware/auth.js';
 
-const cookieOptions = (res) => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  return {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: process.env.COOKIE_SAME_SITE || 'Lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    path: '/',
-  };
-};
-
 export const register = async (req, res, next) => {
   const { name, email, password, role } = req.body;
 
@@ -25,7 +14,11 @@ export const register = async (req, res, next) => {
     name,
     email: email.toLowerCase(),
     password,
-    role: role && ['customer', 'owner', 'admin'].includes(role) ? role : 'customer',
+    // Keep role selection for automated development fixtures; production roles
+    // are assigned by a trusted administrator, never through public signup.
+    role: process.env.NODE_ENV !== 'production' && ['customer', 'owner', 'admin'].includes(role)
+      ? role
+      : 'customer',
   });
 
   generateToken(user._id, res);
@@ -56,7 +49,14 @@ export const login = async (req, res, next) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie('token', { path: '/' });
+  const isProduction = process.env.NODE_ENV === 'production';
+  const sameSite = process.env.COOKIE_SAME_SITE || (isProduction ? 'None' : 'Lax');
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.COOKIE_SECURE === 'true' || (isProduction && sameSite.toLowerCase() === 'none'),
+    sameSite,
+    path: '/',
+  });
   return res.json({ success: true, message: 'Logged out' });
 };
 

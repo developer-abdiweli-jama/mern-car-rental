@@ -1,16 +1,9 @@
 import multer from 'multer';
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
-const UPLOAD_DIR = join(process.cwd(), 'public', 'uploads');
-
-const storage = multer.diskStorage({
-  destination: UPLOAD_DIR,
-  filename: (req, file, cb) => {
-    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = file.originalname.split('.').pop();
-    cb(null, `${unique}.${ext}`);
-  },
-});
+const BACKEND_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const UPLOAD_DIR = join(BACKEND_DIR, 'public', 'uploads');
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image/')) cb(null, true);
@@ -18,7 +11,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   fileFilter,
   limits: { fileSize: 5 * 1024 * 1024 },
 });

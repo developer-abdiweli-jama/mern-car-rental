@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1b4b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#312e81;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow4" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="15" />
+      <feOffset dx="0" dy="10" result="offsetblur" />
+      <feComponentTransfer><feFuncA type="linear" slope="0.35" /></feComponentTransfer>
+      <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g4)" />
+  <path d="M220 420 L290 340 L760 340 L880 420 L1000 420 L1000 560 L220 560 Z" fill="#a855f7" stroke="#7e22ce" stroke-width="4" filter="url(#shadow4)" />
+  <path d="M360 340 L480 280 L640 280 L760 340 Z" fill="#7e22ce" />
+  <circle cx="320" cy="570" r="40" fill="#0f172a" stroke="#334155" stroke-width="6" />
+  <circle cx="320" cy="570" r="18" fill="#475569" />
+  <circle cx="760" cy="570" r="40" fill="#0f172a" stroke="#334155" stroke-width="6" />
+  <circle cx="760" cy="570" r="18" fill="#475569" />
+  <path d="M380 355 L460 305 L620 305 L700 355 Z" fill="#e9d5ff" stroke="#d8b4fe" stroke-width="3" />
+  <text x="600" y="710" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#faf5ff" text-anchor="middle">Electric Coupe</text>
+  <text x="600" y="760" font-family="Arial, sans-serif" font-size="28" fill="#ede9fe" text-anchor="middle">1200x800 High Resolution</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#f8fafc" />
+  <circle cx="60" cy="70" r="28" fill="#cbd5e1" />
+  <circle cx="240" cy="70" r="28" fill="#cbd5e1" />
+  <path d="M60 70 Q150 30 240 70" fill="none" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round" />
+  <rect x="40" y="110" width="220" height="40" rx="4" fill="#e2e8f0" />
+  <text x="150" y="160" font-family="Arial, sans-serif" font-size="16" fill="#94a3b8" text-anchor="middle">Customer Testimonial</text>
+</svg>

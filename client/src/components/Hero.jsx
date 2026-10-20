@@ -1,10 +1,21 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { assets, cityList } from '../assets/assets'
+import { useNavigate } from 'react-router-dom'
 
 const Hero = () => {
+    const navigate = useNavigate()
     const [pickupLocation, setPickupLocation] = useState('')
     const [pickupDate, setPickupDate] = useState('')
     const [returnDate, setReturnDate] = useState('')
+
+    const handleSearch = (event) => {
+        event.preventDefault()
+        const params = new URLSearchParams()
+        if (pickupLocation) params.set('location', pickupLocation)
+        if (pickupDate) params.set('pickupDate', pickupDate)
+        if (returnDate) params.set('returnDate', returnDate)
+        navigate(`/cars${params.size ? `?${params.toString()}` : ''}`)
+    }
 
     return (
         <div className='min-h-screen flex flex-col items-center justify-center bg-light text-center pt-16'>
@@ -15,7 +26,7 @@ const Hero = () => {
                 </h1>
             </div>
 
-            <form className='flex flex-col md:flex-row items-start md:items-center justify-between p-6 rounded-lg md:rounded-full w-full max-w-4xl bg-white border border-borderColor shadow-[0px_8px_20px_rgba(0,0,0,0.1)]'>
+            <form onSubmit={handleSearch} className='flex flex-col md:flex-row items-start md:items-center justify-between p-6 rounded-lg md:rounded-full w-full max-w-4xl bg-white border border-borderColor shadow-[0px_8px_20px_rgba(0,0,0,0.1)]'>
 
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-12 w-full">
                     <div className='flex flex-col items-start gap-1'>
@@ -47,6 +58,7 @@ const Hero = () => {
                             id='return-date'
                             value={returnDate}
                             onChange={(e) => setReturnDate(e.target.value)}
+                            min={pickupDate || new Date().toISOString().split('T')[0]}
                             className='text-gray-500 bg-transparent border-none outline-none'
                             required
                         />
@@ -54,7 +66,7 @@ const Hero = () => {
                 </div>
 
                 <button
-                    type="button"
+                    type="submit"
                     className='flex items-center justify-center gap-1 px-9 py-3 max-sm:mt-4 bg-primary hover:bg-primary-dull text-white rounded-full cursor-pointer transition-colors'
                 >
                     <img src={assets.search_icon} alt='Search' className='w-5 h-5 brightness-0 invert' />

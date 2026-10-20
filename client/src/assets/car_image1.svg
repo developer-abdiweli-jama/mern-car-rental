@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="15" />
+      <feOffset dx="0" dy="10" result="offsetblur" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.35" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g1)" />
+  <!-- Car body -->
+  <path d="M180 420 L240 340 L780 340 L900 420 L1020 420 L1020 560 L180 560 Z" fill="#2563eb" stroke="#1e40af" stroke-width="4" filter="url(#shadow)" />
+  <path d="M300 340 L420 280 L660 280 L780 340 Z" fill="#1e40af" />
+  <!-- Wheels -->
+  <circle cx="280" cy="570" r="42" fill="#0f172a" stroke="#334155" stroke-width="6" />
+  <circle cx="280" cy="570" r="20" fill="#475569" />
+  <circle cx="740" cy="570" r="42" fill="#0f172a" stroke="#334155" stroke-width="6" />
+  <circle cx="740" cy="570" r="20" fill="#475569" />
+  <!-- Windows -->
+  <path d="M320 355 L400 305 L640 305 L720 355 Z" fill="#93c5fd" stroke="#60a5fa" stroke-width="3" />
+  <!-- Badge -->
+  <text x="600" y="720" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#f8fafc" text-anchor="middle">Luxury Sedan</text>
+  <text x="600" y="770" font-family="Arial, sans-serif" font-size="28" fill="#cbd5e1" text-anchor="middle">1200x800 High Resolution</text>
+</svg>

@@ -2,15 +2,24 @@ import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { getImageUrl } from "../utils/imageUrl";
 
-const CarCard = ({ car }) => {
+const CarCard = ({ car, pickupDate, returnDate }) => {
   const currency = import.meta.env.VITE_CURRENCY;
   const navigate=useNavigate();
+  const openCar = () => {
+    const params = new URLSearchParams();
+    if (pickupDate) params.set('pickupDate', pickupDate);
+    if (returnDate) params.set('returnDate', returnDate);
+    const query = params.toString();
+    navigate(`/car-details/${car._id}${query ? `?${query}` : ''}`);
+    scrollTo(0, 0);
+  };
   return (
-    <div onClick={()=>{navigate(`/car-details/${car._id}`); scrollTo(0,0)}} className="group rounded-xl overflow-hidden shadow-lg hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+    <div onClick={openCar} className="group rounded-xl overflow-hidden shadow-lg hover:-translate-y-1 transition-all duration-500 cursor-pointer">
       <div className="relative h-48 overflow-hidden">
         <img
           src={getImageUrl(car.image)}
           alt="Car Image"
+          onError={(event) => { event.currentTarget.src = assets.car_image1; }}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         {car.isAvailable && (
